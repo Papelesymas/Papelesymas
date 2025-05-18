@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Papeles y +</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(145deg, #f9f6ff, #e8f9ff);
+      color: #1a1a1a;
+    }
+    header {
+      text-align: center;
+      padding: 3em 1em 1.5em;
+    }
+    header img {
+      max-width: 180px;
+      margin-bottom: 1em;
+    }
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.4em;
+    }
+    header p {
+      font-size: 1.1em;
+      color: #555;
+    }
+    .form-section {
+      max-width: 600px;
+      margin: 3em auto;
+      background: #fff;
+      padding: 2em;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      animation: fadeIn 1s ease-out;
+    }
+    .form-section h2 {
+      text-align: center;
+      margin-bottom: 1.5em;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+    }
+    input, textarea {
+      padding: 0.8em 1em;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      width: 100%;
+    }
+    button {
+      background-color: #25D366;
+      color: white;
+      padding: 0.9em;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background-color: #1ebe5b;
+    }
+    .confirmation {
+      text-align: center;
+      color: green;
+      margin-top: 1em;
+      font-weight: 600;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <script>
+    async function enviarFormulario(event) {
+      event.preventDefault();
+      const form = event.target;
+      const data = {
+        nombre: form.nombre.value,
+        telefono: form.telefono.value,
+        email: form.email.value,
+        mensaje: form.mensaje.value
+      };
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbxlqZqwqWsdhZ6GaXSk0NSPGaVpjOoBYy2Oy2HsNgksVUvi4z9yQ9JrYm3PFKopMK6lEg/exec", {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        if (response.ok) {
+          document.getElementById("formulario").reset();
+          document.getElementById("confirmacion").innerText = "¡Gracias! Tu solicitud fue enviada.";
+        } else {
+          alert("Hubo un error al enviar el formulario.");
+        }
+      } catch (error) {
+        alert("Error al conectar con el servidor.");
+      }
+    }
+  </script>
+</head>
+<body>
+
+  <header>
+    <img src="logo.png" alt="Papeles y + Logo" />
+    <h1>Papeles y +</h1>
+    <p>Asistencia profesional en formularios migratorios, viajes y más</p>
+  </header>
+
+  <section class="form-section">
+    <h2>Solicita tu servicio</h2>
+    <form id="formulario" onsubmit="enviarFormulario(event)">
+      <input type="text" name="nombre" placeholder="Tu nombre" required />
+      <input type="tel" name="telefono" placeholder="Tu teléfono" required />
+      <input type="email" name="email" placeholder="Tu correo electrónico" required />
+      <textarea name="mensaje" placeholder="Cuéntanos qué necesitas" rows="5" required></textarea>
+      <button type="submit">Enviar</button>
+      <div id="confirmacion" class="confirmation"></div>
+    </form>
+  </section>
+
+</body>
+</html>
